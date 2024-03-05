@@ -4,8 +4,6 @@ import './get_rate.dart';
 import './display_total.dart';
 
 class SwapForm extends StatefulWidget {
-  //final Function(String, String, int) onSwap;
-  //const SwapForm({super.key, required this.onSwap});
   const SwapForm({super.key});
 
   @override
@@ -13,10 +11,11 @@ class SwapForm extends StatefulWidget {
 }
 
 class _FormArea extends State<SwapForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String currency1 = '';
   String currency2 = '';
-  int total = 0;
-  dynamic rate = 0;
+  double total = 0;
+  double rate = 0;
 
   final TextEditingController _amountController = TextEditingController();
 
@@ -26,16 +25,19 @@ class _FormArea extends State<SwapForm> {
     });
   }
 
+  void _updateTotal(double newRate){
+    setState(() {
+      rate = newRate;
+      total = rate * double.parse(_amountController.text);
+      print("the final rate is $total");
+    });
+  }
+
   @override
   void dispose() {
     _amountController.dispose();
     super.dispose();
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +54,13 @@ class _FormArea extends State<SwapForm> {
                 ),
               ],
             ),
-            child: Column(
+            child: Form(
+              key: _formKey,
+                child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Container(
-                //   color: Colors.red,
-                //     child: ),
-                DisplayTotal(total: total, rate: rate),
+                DisplayTotal(total: total, rate: rate, currency: currency2,),
                 Container(
                   color: const Color.fromARGB(255, 214, 214, 214),
                   width: 300,
@@ -81,6 +82,7 @@ class _FormArea extends State<SwapForm> {
                         if (!numericRegex.hasMatch(value)) {
                           return 'Only numbers can be inputted';
                         }
+                        print("key: $_formKey");
                       }
                       return null;
                     },
@@ -92,27 +94,14 @@ class _FormArea extends State<SwapForm> {
                 CurrencyDropDown(onCurrencyChanged: (newCurrency) {
                   updateCurrency(newCurrency, 2);
                 }),
-                FloatingActionButton.extended(
-                    onPressed: () {
-                      setState(() {
-                        total = int.parse(_amountController.text);
-                        GetRate(
-                          currency1: currency1,
-                          currency2: currency2,
-                          total: total,
-                          rateResults: (rating) {
-                            print("totototot $rating");
-                            // setState(() {
-                            // rate = total;
-                            // });
-                          },
-                        );
-                      });
-                    },
-                    label: const Text("Swap rates",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)))
+                GetRate(
+                    currency1: currency1,
+                    currency2: currency2,
+                    total: total,
+                    rateResults: (rate) {
+                      _updateTotal(rate);
+                    })
               ],
-            )));
+            ))));
   }
 }

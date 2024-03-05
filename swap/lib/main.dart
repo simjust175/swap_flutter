@@ -25,42 +25,13 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.teal,
             //title: const Text("Swap"),
             title: Align(
-              alignment: Alignment.bottomLeft,
+              alignment: Alignment.centerLeft,
               child: Image.asset('../assets/images/Swap_green.png', width: 150, height: 100,)),
           ),
           //body: FormAction(),
-          body: SwapForm(),
+          body: const SwapForm(),
           
         ));
   }
 }
 
-// class FormAction extends StatefulWidget {
-//    @override
-//    State<FormAction> createState()=> _FormActionState();
-// }
-
-// class _FormActionState extends State<FormAction> {
-//   String currency1= '';
-//   String currency2= '';
-//   int total = 0;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//             color: const Color.fromARGB(31, 233, 161, 161),
-//             child:Row(
-//             children: [
-//               SwapForm(
-//                 onSwap: (currency1, currency2, amount){
-//                   setState(() {
-//                     currency1 = currency1;
-//                     currency2 = currency2;
-//                     total = amount;
-//                   });
-//                 },
-//               ),
-//               if(total > 0) GetRate(currency1: currency1, currency2: currency2, total: total)
-//             ],
-//           ));
-//   }
-// }

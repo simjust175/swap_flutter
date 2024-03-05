@@ -4,10 +4,10 @@ import 'dart:convert';
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GetRate extends StatefulWidget {
-  final Function(int) rateResults;
+  final Function(double) rateResults;
   final String currency1;
   final String currency2;
-  final int total;
+  final double total;
   const GetRate(
       {super.key,
       required this.currency1,
@@ -34,66 +34,45 @@ class _GetRateState extends State<GetRate> {
     if (res.statusCode == 200) {
       setState(() {
         rate = json.decode(res.body);
+        print('the rate is: ${rate["conversion_rate"]}');
+        widget.rateResults(rate["conversion_rate"]);
       });
     } else {
       throw Exception("Aw.. Snap🫰");
-    }
-    //setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.currency1.isNotEmpty &&
-        widget.currency2.isNotEmpty &&
-        widget.total > 0) {
-      getRate();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      "the rate is ${rate.isNotEmpty ? double.parse(rate["conversion_rate"]) * widget.total : "..."}",
-      textAlign: TextAlign.center,
-      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-    );
-  }
+  //   return FloatingActionButton.extended(
+  //       onPressed: () {
+  //         getRate();
+  //       },
+  //       label: const Text("Swap rates",
+  //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)));
+  // }
+  return GestureDetector(
+    onTap: ()=> getRate(),
+    child: Ink(
+    color: Colors.teal,
+    width: 250,
+    child: Material(
+    elevation: 6,
+    borderRadius: BorderRadius.circular(8),
+    color: Colors.teal,
+    child: InkWell(
+      onTap: () => getRate(),
+      borderRadius: BorderRadius.circular(8),
+      child: SizedBox(
+        width: 250,
+        height: 56.0,
+        child: Center(child: Text("Get rate in ${widget.currency2}",
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold
+        ),)),
+      ),
+    ),
+  ),));
 }
-
-/*
-Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          //color: const Color.fromARGB(255, 221, 235, 241),
-          color: Colors.green,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              offset: const Offset(0, 4),
-              blurRadius: 8,
-            ),
-          ],
-        ),
-        child: Column(children: [
-          Text(
-            "the rate is ${rate.isNotEmpty ? double.parse(rate["conversion_rate"]) * widget.total : "..."}",
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          FloatingActionButton.extended(
-              onPressed: () async{
-                    if (widget.currency1.isNotEmpty &&
-                        widget.currency2.isNotEmpty &&
-                        widget.total > 0)
-                      {
-                        print("getting there!");
-                        await getRate();
-                        
-                      }
-                   
-                  },
-              label: const Text("Swap"))
-        ]));
-*/
-//.toStringAsFixed(2)
+}
