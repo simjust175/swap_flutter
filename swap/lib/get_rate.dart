@@ -21,7 +21,7 @@ class GetRate extends StatefulWidget {
 
 class _GetRateState extends State<GetRate> {
   //dynamic apiKey = dotenv.env['API_KEY'];
-  String apiKey = '5562c11f84e1689f7b353756';
+  String apiKey = ''; //get you Api key on https://app.exchangerate-api.com/sign-up
 
   Map<String, dynamic> rate = {};
 
@@ -44,13 +44,7 @@ class _GetRateState extends State<GetRate> {
 
   @override
   Widget build(BuildContext context) {
-  //   return FloatingActionButton.extended(
-  //       onPressed: () {
-  //         getRate();
-  //       },
-  //       label: const Text("Swap rates",
-  //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)));
-  // }
+
   return GestureDetector(
     onTap: ()=> getRate(),
     child: Ink(

@@ -21,6 +21,7 @@ class _FormArea extends State<SwapForm> {
 
   void updateCurrency(String currency, int currencyNumber) {
     setState(() {
+      //currency['currencyNumber'] = currency;
       currencyNumber == 1 ? currency1 = currency : currency2 = currency;
     });
   }

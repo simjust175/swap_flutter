@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'swap_form.dart';
-import 'get_rate.dart';
 //import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main(){
